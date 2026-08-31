@@ -1,0 +1,40 @@
+---
+description: Regras de domínio e arquitetura para arquivos em src/ — cálculo puro separado da CLI.
+globs: src/**
+alwaysApply: false
+---
+
+# Domínio e arquitetura em `src/`
+
+## Separação de responsabilidades
+
+- Mantenha toda regra de negócio e validação em `calculateMeetingCost` (`calculate-meeting-cost.js`).
+- `cli.js` só lê `process.argv`, converte com `Number()`, chama o domínio e imprime resultado ou erro.
+- Não duplique validações na CLI nem espalhe lógica de cálculo fora de `calculateMeetingCost`.
+
+## Contrato de `calculateMeetingCost`
+
+- Assinatura: `(participants, durationMinutes, costPerHour)`.
+- Retorno de sucesso: `{ ok: true, totalCost: number }`.
+- Retorno de falha: `{ ok: false, error: string }` — **não lance exceção** para entrada inválida.
+- Fórmula: `totalCost = participants × (durationMinutes / 60) × costPerHour`.
+
+## Validações (única fonte de verdade)
+
+| Condição | Mensagem de erro |
+|---|---|
+| Qualquer parâmetro não finito | `Todos os valores devem ser números finitos.` |
+| `participants < 1` | `O número de participantes deve ser pelo menos 1.` |
+| `durationMinutes <= 0` | `A duração deve ser maior que zero minutos.` |
+| `costPerHour < 0` | `O custo por hora não pode ser negativo.` |
+
+## CLI (`cli.js`)
+
+- Exija exatamente 3 argumentos posicionais.
+- Em falha: `console.error` com `Erro: <mensagem>`, repita o uso e `process.exit(1)`.
+- Em sucesso: `console.log` com `.toFixed(2)` e resumo dos três parâmetros.
+
+## Módulos
+
+- ESM nativo: imports locais com extensão `.js`.
+- Use apenas APIs nativas do Node (`process`, `console`, `Number`).

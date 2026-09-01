@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "node .cursor/hooks/before-shell-execution.js"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "node .cursor/hooks/after-file-edit.js"
+      }
+    ]
+  }
+}

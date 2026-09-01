@@ -1,7 +1,9 @@
 import { calculateMeetingCost } from './calculate-meeting-cost.js';
 
+/** @type {string} */
 const USAGE = 'Uso: npm start -- <participantes> <duracao-minutos> <custo-por-hora>';
 
+/** @type {string[]} */
 const args = process.argv.slice(2);
 
 if (args.length !== 3) {
@@ -22,5 +24,5 @@ if (!result.ok) {
 }
 
 console.log(
-  `Custo total da reunião: ${result.totalCost.toFixed(2)} (${participants} participante(s), ${durationMinutes} min, ${costPerHour}/h)`
+  `Custo total da reunião: ${result.totalCost.toFixed(2)} (${participants} participante(s), ${durationMinutes} min, ${costPerHour}/h)`,
 );

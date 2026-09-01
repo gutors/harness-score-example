@@ -1,29 +1,22 @@
 # Workflow de verificação
 
-Execute após alterações em `src/` ou em regras de cálculo.
+Execute após alterações em `src/`, `test/` ou regras de cálculo.
 
-## Comandos disponíveis
+## Verificação completa
 
-| Passo | Comando | Critério de sucesso |
-|---|---|---|
-| 1. Smoke test | `npm start -- 5 60 100` | Exit 0; saída contém `Custo total da reunião: 500.00` |
-| 2. Erro de domínio | `npm start -- 0 60 100` | Exit 1; stderr contém `Erro:` e mensagem de uso |
-| 3. Args insuficientes | `npm start -- 5 60` | Exit 1; stderr contém mensagem de uso |
+```bash
+npm run check
+```
 
-## Sensors pendentes
+Executa em sequência: `npm run lint` → `npm run typecheck` → `npm test`.
 
-Os seguintes sensores **não existem** neste repositório — **não invente comandos**:
+## Smoke test manual
 
-| Sensor | Status | Nota |
-|---|---|---|
-| Testes (`npm test`) | **Pendente** | Sem diretório de testes ou script de teste |
-| Lint (`npm run lint`) | **Pendente** | Sem linter configurado |
-| Typecheck (`npm run typecheck`) | **Pendente** | JavaScript puro, sem TypeScript |
+| Comando | Critério |
+|---|---|
+| `npm start -- 5 60 100` | Exit 0; saída contém `Custo total da reunião: 500.00` |
+| `npm start -- 0 60 100` | Exit 1; stderr contém `Erro:` e mensagem de uso |
 
-Quando esses sensores forem adicionados no futuro, atualize esta tabela e o `package.json` antes de referenciá-los aqui.
+## CI
 
-## Critério de conclusão
-
-- Todos os comandos da tabela "Comandos disponíveis" passam.
-- Nenhum sensor pendente foi simulado ou inventado.
-- `calculateMeetingCost` permanece pura com contrato `{ ok, totalCost }` / `{ ok, error }`.
+Push em `main` e pull requests executam `.github/workflows/ci.yml`: `npm ci`, `npm run lint`, `npm run typecheck`, `npm test`.

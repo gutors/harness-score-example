@@ -1,10 +1,16 @@
 /**
+ * @typedef {{ ok: true, totalCost: number }} MeetingCostSuccess
+ * @typedef {{ ok: false, error: string }} MeetingCostFailure
+ * @typedef {MeetingCostSuccess | MeetingCostFailure} MeetingCostResult
+ */
+
+/**
  * Calcula o custo total de mão de obra de uma reunião.
  *
  * @param {number} participants - Número de participantes
  * @param {number} durationMinutes - Duração em minutos
  * @param {number} costPerHour - Custo por hora por participante
- * @returns {{ ok: true, totalCost: number } | { ok: false, error: string }}
+ * @returns {MeetingCostResult}
  */
 export function calculateMeetingCost(participants, durationMinutes, costPerHour) {
   if (
